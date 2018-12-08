@@ -1,0 +1,13 @@
+
+
+用户和项目关系
+SELECT usr.usr_id,usr.usr_name,usr.prc_id,project.prc_name from  usr,project
+where usr.prc_id=project.prc_id
+
+
+管理员和项目的关系
+
+SELECT DISTINCT manager.mng_id,mng_name,mng_psw,prc_id from  privileg
+LEFT JOIN manager
+on privileg.mng_id=manager.mng_id  where mng_name='momo'
+

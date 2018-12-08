@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登陆页面</title>
+    <script type="text/javascript" src="js/jquery.js"></script>
+</head>
+<body>
+<input  id="p" type="hidden" th:value="${usrVo.usr_id}"/>
+<!--方式一：将值赋给hidden域-->
+<input type="hidden" th:value="${usrVo.mng_name}" id="v"/>
+<!--方式二：将值放入[[${usrVo.mng_name}]]-->
+<script th:inline="javascript">
+    var message = [[${usrVo.mng_name}]];
+    var mngId = [[${usrVo.mng_id}]];
+    // console.log(message);
+    <!--Js 获取hidden的隐藏域-->
+    var v=$("#v").val();
+    alert(v)
+    alert("================")
+    alert(message)
+</script>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>用户名</th>
+        <th>项目名</th>
+        <th>最后一次签到时间</th>
+        <th>最后一次签到是否迟到</th>
+        <th>签到次数</th>
+        <th>8：30上班</th>
+    </tr>
+    </thead>
+    <tbody id="tt">
+    <!--<tr th:each="emp : ${empList}">-->
+        <!--<td th:text="${emp.mng_id}">1</td>-->
+        <!--<td th:text="${emp.mng_name}">1</td>-->
+        <!--<td th:text="${emp.prc_id}">1</td>-->
+        <!--<td th:text="${emp.mng_id}">1</td>-->
+        <!--<td th:text="${emp.mng_id}">1</td>-->
+        <!--<td th:text="${emp.mng_id}">1</td>-->
+    <!--</tr>-->
+    </tbody>
+    <script>
+        $(function () {
+
+            var str = "";
+            $.ajax({
+                type:"POST",
+                url:"/queryAll?mngId="+mngId,
+                dataType:'json',
+                async:false,
+                success:function(result) {
+                    console.log(result)
+                    for (var i = 0; i < result.length; i++) {
+                        str += "<tr>" +
+                            "<td>" + result[i].name + "</td>" +
+                            "<td>" + result[i].project + "</td>" +
+                            "<td>" + result[i].signTime + "</td>" +
+                            "<td>" + result[i].isSign + "</td>" +
+                            "<td>" + result[i].signSum + "</td>" +
+                            "<td>" + result[i].upWorkTime + "</td>" +
+                            "</tr>";
+                    }
+                    $("#tt").html(str);
+                }
+            })
+            //alert(str)
+        })
+
+    </script>
+</table>
+
+</body>
+</html>
